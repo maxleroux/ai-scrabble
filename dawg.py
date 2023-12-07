@@ -1,13 +1,4 @@
-#!/usr/bin/python3
-# By Steve Hanov, 2011. Released to the public domain.
-# Please see http://stevehanov.ca/blog/index.php?id=115 for the accompanying article.
-#
-# Based on Daciuk, Jan, et al. "Incremental construction of minimal acyclic finite-state automata." 
-# Computational linguistics 26.1 (2000): 3-16.
-#
-# Updated 2014 to use DAWG as a mapping; see 
-# Kowaltowski, T.; CL. Lucchesi (1993), "Applications of finite automata representing large vocabularies", 
-# Software-Practice and Experience 1993
+# taken from Steve Hanov, 2011, implementation found here http://stevehanov.ca/blog/index.php?id=115
 import sys
 import time
 

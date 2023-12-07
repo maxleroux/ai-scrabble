@@ -17,30 +17,12 @@ letterPointDict = {'A': 9, 'B': 2, 'C': 2, 'D': 3, 'E': 12, 'F': 2,
                    'Y': 2, 'Z': 1}
 
 class referee:
-    def __init__(self):
-        self.letterBag = []
-        for letter in letterPointDict.keys():
-            for _ in range(letterPointDict[letter]):
-                self.letterBag.append(letter)
-
-    # draws the given number of letters from the remaining tiles in the letter bag, or all of the tiles left in the bag if
-    # that quantity is smaller than the requested number of tiles
-    def drawLetters(self, num):
-        drawnLetters = ''
-        if num <= len(self.letterBag):
-            for _ in range(num):
-                x = random.random()
-                index = int(math.floor(x*len(self.letterBag) / 1))
-                drawnLetters += self.letterBag[index]
-                self.letterBag.pop(index)
-        else:
-            for letter in self.letterBag:
-                drawnLetters += letter
-            self.letterBag = []
-        return drawnLetters
+    def __init__(self, playerScore = 0, opponentScore = 0):
+        self.selfScore = playerScore
+        self.opponentScore = opponentScore
 
     # get the amount of points the given letterCombo is worth based on the tiles played and their locations (spotCombo)
-    def calcWordScore(spotCombo, letterCombo, board):
+    def calcWordScore(letterCombo, spotCombo, board):
         wordScore = 0
         doubleWordSpace = 0
         tripleWordSpace = 0
