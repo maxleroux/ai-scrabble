@@ -1,9 +1,9 @@
-# taken from Steve Hanov, 2011, implementation found here http://stevehanov.ca/blog/index.php?id=115
+# taken/manipulated from Steve Hanov, 2011, implementation found here http://stevehanov.ca/blog/index.php?id=115
 import sys
 import time
 
 DICTIONARY = "./official_scrabble_dict.txt"
-QUERY = sys.argv[1:]
+QUERY = ["AARRGHH"]
 
 # This class represents a node in the directed acyclic word graph (DAWG). It
 # has a list of edges to other nodes. It has functions for testing whether it
@@ -180,6 +180,7 @@ for word in words:
     dawg.insert(word, ''.join(reversed(word)))
     if ( WordCount % 100 ) == 0: print("{0}\r".format(WordCount), end="")
 dawg.finish()
+dawg.display()
 print("Dawg creation took {0} s".format(time.time()-start))
 
 EdgeCount = dawg.edgeCount()
@@ -189,7 +190,7 @@ print("Read {0} words into {1} nodes and {2} edges".format(
 print("This could be stored in as little as {0} bytes".format(EdgeCount * 4))
 
 for word in QUERY:
-    result = dawg.lookup(word)
+    result = dawg.lookup(word.upper())
     if result == None:
         print("{0} not in dictionary.".format(word))
     else:
