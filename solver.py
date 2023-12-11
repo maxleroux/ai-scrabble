@@ -1,9 +1,22 @@
-import dawg
+from dawg import dawg
+
+DICTIONARY = "./official_scrabble_dict.txt"
 
 class solver:
     def __init__(self, game):
         self.game = game
         self.dawg = dawg()
+        WordCount = 0
+        words = open(DICTIONARY, "rt").read().split()
+        words.sort() 
+        for word in words:
+            WordCount += 1
+            # insert all words, using the reversed version as the data associated with
+            # it
+            self.dawg.insert(word, ''.join(reversed(word)))
+            if ( WordCount % 100 ) == 0: print("{0}\r".format(WordCount), end="")
+        self.dawg.finish()
+        self.anagrams = []
         # 
     
     def rack_evaluation(self):
@@ -15,44 +28,58 @@ class solver:
     # that start on that square —> WalkDawg after it has been improved for handling 
     # of blanks, letters on board, edge limitations, and crosswords
 
-    def isLast(self,edge):
-        return
+    def isLast(self, edge):
+        parent, current_edge, child = list(dawg.minimizedNodes.values()).index(edge)
+        return child.final
     
-    def getChar(edge):
-        return
+    def getChar(self,edge):
+        return list(dawg.minimizedNodes.keys())[list(dawg.minimizedNodes.values()).index(edge)]
+
+    def anagramHandler(self, word):
+        self.anagrams.append(word)
+        print(self.anagrams)
 
     # this needs to also account for :
     # 1) using blanks
     # 2) handling of tiles on board
     # 3) checking for edge of board --> attachments method from scrabble-ai?
     # 4) handling of crossword constraints
-    def traverseDAWG(nodeIndex):
-        if nodeIndex == 0 :
+    def traverseDAWG(self, nodeIndex):
+        print("hit 1")
+        if nodeIndex == 1 :
             return
         
-        edge = 0
+        word = ""
+        wordIndex = 0
+        print("hit 2")
 
         while True:
-            if not solver.isLast(edge):
-                return
+            print("hit 3")
             
-            # idk how to do this 
-            # it's supposed to be edge = dawg[nodeindex++]
-            edge = dawg
+            nodeIndex = nodeIndex+1
+            print(self.dawg)
+            edge = self.dawg.minimizedNodes[nodeIndex]
 
-            c = solver.getChar(edge)
+            c = self.getChar(edge)
 
-            if (tileCounts[c]):
-                tileCounts[c] = tileCounts[c] -1
-                word[wordIndex++] = c
+            if (self.dawg.rack[c] != 0):
+                self.dawg.rack[c] = self.dawg.rack[c]-1
 
-                if (isLegalWord(edge)):
-                    anagramHandler(word, wordIndex)
+                wordIndex = wordIndex+1
+                word[wordIndex] = c
 
-                traverseDawg(getNextNode(edge))
+                if (self.dawg.lookup(word)):
+                    self.anagramHandler(word)
 
-                tileCounts[c]++
-                wordIndex--
+                parent, current_edge, child = self.dawg.minimizedNodes.values().index(edge)
+                self.traverseDAWG(child)
+
+                self.dawg.rack[c] = self.dawg.rack[c]+1
+                wordIndex = wordIndex-1
+                print("hit 4")
+
+            if self.isLast(edge):
+                return
 
     
     

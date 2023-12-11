@@ -10,11 +10,10 @@ doubleWord = [16, 28, 32, 42, 48, 56, 64, 70,
 doubleLetter = [3, 11, 36, 38, 45, 52, 59, 92, 96, 98, 102, 108,
                 116, 122, 126, 128, 132, 165, 172, 179, 186, 188, 213, 221]
 tripleLetter = [20, 24, 76, 80, 84, 88, 136, 140, 144, 148, 200, 204]
-letterPointDict = {'A': 9, 'B': 2, 'C': 2, 'D': 3, 'E': 12, 'F': 2,
-                   'G': 3, 'H': 2, 'I': 9, 'J': 1, 'K': 1, 'L': 4,
-                   'M': 2, 'N': 6, 'O': 8, 'P': 2, 'Q': 1, 'R': 6,
-                   'S': 4, 'T': 6, 'U': 3, 'V': 2, 'W': 2, 'X': 1,
-                   'Y': 2, 'Z': 1}
+letterPointDict = {'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 'F': 4, 'G': 2,
+                  'H': 4, 'I': 1, 'J': 8, 'K': 5, 'L': 1, 'M': 3, 'N': 1,
+                  'O': 1, 'P': 3, 'Q': 10, 'R': 1, 'S': 1, 'T': 1, 'U': 1,
+                  'V': 4, 'W': 4, 'X': 8, 'Y': 4, 'Z': 10}
 
 class referee:
     def __init__(self, playerScore = 0, opponentScore = 0):
@@ -36,19 +35,23 @@ class referee:
             elif spot in tripleWord:
                 tripleWordSpace += 1
             if spot in doubleLetter:
-                if spot in letterPointDict.keys():
+                if spot in letterCombo.keys():
                     wordScore += 2 * letterPointDict[letterCombo[spot]]
                 else:
                     wordScore += 2 * letterPointDict[board[spot]]
             elif spot in tripleLetter:
-                if spot in letterPointDict.keys():
+                if spot in letterCombo.keys():
                     wordScore += 3 * letterPointDict[letterCombo[spot]]
                 else:
                     wordScore += 3 * letterPointDict[board[spot]]
             else:
-                if spot in letterPointDict.keys():
-                    wordScore += letterPointDict[letterCombo[spot]]
+                if spot in letterCombo.keys():
+                    print(letterCombo[spot])
+                    print(letterPointDict[letterCombo[spot].upper()])
+                    wordScore += letterPointDict[letterCombo[spot].upper()]
                 else:
                     wordScore += letterPointDict[board[spot]]
-                
+        
+        
+
         return wordScore * (2**doubleWordSpace) * (3**tripleWordSpace)

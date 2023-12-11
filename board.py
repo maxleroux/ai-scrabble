@@ -24,7 +24,7 @@ class board:
     # add the given letters to the given spots on the board
     def updateBoard(self, letterCombo, spotCombo):
         for (letter, spot) in zip(letterCombo, spotCombo):
-            self.board = self.board[:spot] + letter + self.board[spot+1:]
+            self.board = self.board[:spot] + letter.upper() + self.board[spot+1:]
 
     # print out the current state of the game board
     def printBoard(self):

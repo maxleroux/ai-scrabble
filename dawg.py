@@ -10,12 +10,12 @@ QUERY = ["AARRGHH"]
 # is equivalent to another node. Nodes are equivalent if they have identical
 # edges, and each identical edge leads to identical states. The __hash__ and
 # __eq__ functions allow it to be used as a key in a python dictionary.
-class DawgNode:
+class dawgNode:
     NextId = 0
     
     def __init__(self):
-        self.id = DawgNode.NextId
-        DawgNode.NextId += 1
+        self.id = dawgNode.NextId
+        dawgNode.NextId += 1
         self.final = False
         self.edges = {}
 
@@ -55,10 +55,10 @@ class DawgNode:
         self.count = count
         return count
 
-class Dawg:
+class dawg:
     def __init__(self):
         self.previousWord = ""
-        self.root = DawgNode()
+        self.root = dawgNode()
 
         # Here is a list of nodes that have not been checked for duplication.
         self.uncheckedNodes = []
@@ -96,7 +96,7 @@ class Dawg:
             node = self.uncheckedNodes[-1][2]
 
         for letter in word[commonPrefix:]:
-            nextNode = DawgNode()
+            nextNode = dawgNode()
             node.edges[letter] = nextNode
             self.uncheckedNodes.append( (node, letter, nextNode) )
             node = nextNode
@@ -160,7 +160,7 @@ class Dawg:
                 stack.append(child)
 
 if 0:
-    dawg = Dawg()
+    dawg = dawg()
     dawg.insert("cat", 0)
     dawg.insert("catnip", 1)
     dawg.insert("zcatnip", 2)
@@ -168,7 +168,7 @@ if 0:
     dawg.display()
     sys.exit()
             
-dawg = Dawg()
+dawg = dawg()
 WordCount = 0
 words = open(DICTIONARY, "rt").read().split()
 words.sort()
@@ -180,18 +180,18 @@ for word in words:
     dawg.insert(word, ''.join(reversed(word)))
     if ( WordCount % 100 ) == 0: print("{0}\r".format(WordCount), end="")
 dawg.finish()
-dawg.display()
-print("Dawg creation took {0} s".format(time.time()-start))
+# dawg.display()
+# print("Dawg creation took {0} s".format(time.time()-start))
 
 EdgeCount = dawg.edgeCount()
-print("Read {0} words into {1} nodes and {2} edges".format(
-    WordCount, dawg.nodeCount(), EdgeCount))
+# print("Read {0} words into {1} nodes and {2} edges".format(
+#     WordCount, dawg.nodeCount(), EdgeCount))
 
-print("This could be stored in as little as {0} bytes".format(EdgeCount * 4))
+# print("This could be stored in as little as {0} bytes".format(EdgeCount * 4))
 
 for word in QUERY:
     result = dawg.lookup(word.upper())
-    if result == None:
-        print("{0} not in dictionary.".format(word))
-    else:
-        print("{0} is in the dictionary and has data {1}".format(word, result))
+    # if result == None:
+    #     print("{0} not in dictionary.".format(word))
+    # else:
+    #     print("{0} is in the dictionary and has data {1}".format(word, result))
