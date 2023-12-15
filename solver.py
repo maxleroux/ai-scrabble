@@ -1,11 +1,11 @@
-from dawg import dawg
+import dawg
 
 DICTIONARY = "./official_scrabble_dict.txt"
 
 class solver:
     def __init__(self, game):
         self.game = game
-        self.dawg = dawg()
+        self.dawg = dawg.dawg()
         WordCount = 0
         words = open(DICTIONARY, "rt").read().split()
         words.sort() 
@@ -29,11 +29,12 @@ class solver:
     # of blanks, letters on board, edge limitations, and crosswords
 
     def isLast(self, edge):
-        parent, current_edge, child = list(dawg.minimizedNodes.values()).index(edge)
+        parent, current_edge, child = list(self.dawg.minimizedNodes.values()).index(edge)
         return child.final
     
     def getChar(self,edge):
-        return list(dawg.minimizedNodes.keys())[list(dawg.minimizedNodes.values()).index(edge)]
+        print("edge ", edge)
+        return list(self.dawg.minimizedNodes.keys())[list(self.dawg.minimizedNodes.values()).index(edge)]
 
     def anagramHandler(self, word):
         self.anagrams.append(word)
@@ -58,12 +59,17 @@ class solver:
             
             nodeIndex = nodeIndex+1
             print(self.dawg)
-            edge = self.dawg.minimizedNodes[nodeIndex]
+            # print(self.dawg.minimizedNodes['A'].edge)
+            # edge = self.dawg.minimizedNodes[list(self.dawg.minimizedNodes.keys())[0]]
+            print("root", self.dawg.root)
+            print("edges", self.dawg.root.edges)
+            edge = self.dawg.root.edges['A']
+
 
             c = self.getChar(edge)
 
-            if (self.dawg.rack[c] != 0):
-                self.dawg.rack[c] = self.dawg.rack[c]-1
+            if (self.game.rack[c] != 0):
+                self.game.rack[c] = self.game.rack[c]-1
 
                 wordIndex = wordIndex+1
                 word[wordIndex] = c
