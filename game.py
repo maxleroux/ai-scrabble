@@ -3,6 +3,9 @@
 import referee
 import board
 import solver
+import dawg
+
+DICTIONARY = "./official_scrabble_dict.txt"
 
 blankRack = {'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0, 'G': 0,
                   'H': 0, 'I': 0, 'J': 0, 'K': 0, 'L': 0, 'M': 0, 'N': 0,
@@ -14,6 +17,17 @@ class game:
         self.rack = rack
         self.board = board.board(spots)
         self.referee = referee.referee(playerScore, opponentScore)
+        self.dawg = dawg.dawg()
+        WordCount = 0
+        words = open(DICTIONARY, "rt").read().split()
+        words.sort() 
+        for word in words:
+            WordCount += 1
+            # insert all words, using the reversed version as the data associated with
+            # it
+            self.dawg.insert(word, ''.join(reversed(word)))
+            if ( WordCount % 100 ) == 0: print("{0}\r".format(WordCount), end="")
+        self.dawg.finish()
 
 def main():
     print("Hi! Please input:")
@@ -71,7 +85,7 @@ def main():
     print('Opponent current score: ', opponentWordScore)
 
     gameSolver = solver.solver(gameState)
-    gameSolver.traverseDAWG(0)
+    gameSolver.traverseDAWG(gameState.dawg.root)
 
     # loop the last like 4 things
 

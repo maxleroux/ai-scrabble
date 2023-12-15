@@ -5,17 +5,7 @@ DICTIONARY = "./official_scrabble_dict.txt"
 class solver:
     def __init__(self, game):
         self.game = game
-        self.dawg = dawg.dawg()
-        WordCount = 0
-        words = open(DICTIONARY, "rt").read().split()
-        words.sort() 
-        for word in words:
-            WordCount += 1
-            # insert all words, using the reversed version as the data associated with
-            # it
-            self.dawg.insert(word, ''.join(reversed(word)))
-            if ( WordCount % 100 ) == 0: print("{0}\r".format(WordCount), end="")
-        self.dawg.finish()
+        self.dawg = game.dawg
         self.anagrams = []
         # 
     
@@ -45,9 +35,9 @@ class solver:
     # 2) handling of tiles on board
     # 3) checking for edge of board --> attachments method from scrabble-ai?
     # 4) handling of crossword constraints
-    def traverseDAWG(self, nodeIndex):
+    def traverseDAWG(self, node):
         print("hit 1")
-        if nodeIndex == 1 :
+        if node.final == True :
             return
         
         word = ""
@@ -57,34 +47,40 @@ class solver:
         while True:
             print("hit 3")
             
-            nodeIndex = nodeIndex+1
+            # nodeIndex = nodeIndex+1
             print(self.dawg)
             # print(self.dawg.minimizedNodes['A'].edge)
             # edge = self.dawg.minimizedNodes[list(self.dawg.minimizedNodes.keys())[0]]
             print("root", self.dawg.root)
-            print("edges", self.dawg.root.edges)
-            edge = self.dawg.root.edges['A']
+            print("edges", node.edges.items())
+            label, child = node
 
+            # for letter in word:
+            # if letter not in node.edges: return None
+            # for label, child in sorted(node.edges.items()):
+            #     if label == letter: 
+            #         if node.final: skipped += 1
+            #         node = child
+            #         break
+            #     skipped += child.count
 
-            c = self.getChar(edge)
-
-            if (self.game.rack[c] != 0):
-                self.game.rack[c] = self.game.rack[c]-1
+            if (self.game.rack[label] != 0):
+                self.game.rack[label] = self.game.rack[label]-1
 
                 wordIndex = wordIndex+1
-                word[wordIndex] = c
+                word[wordIndex] = label
 
                 if (self.dawg.lookup(word)):
                     self.anagramHandler(word)
 
-                parent, current_edge, child = self.dawg.minimizedNodes.values().index(edge)
+                # parent, current_edge, child = self.dawg.minimizedNodes.values().index(child)
                 self.traverseDAWG(child)
 
-                self.dawg.rack[c] = self.dawg.rack[c]+1
+                self.dawg.rack[label] = self.dawg.rack[label]+1
                 wordIndex = wordIndex-1
                 print("hit 4")
 
-            if self.isLast(edge):
+            if self.isLast(child):
                 return
 
     
