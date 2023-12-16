@@ -44,7 +44,7 @@ class board:
                 open.append(spot)
         return open
 
-    def getValidStartingSpots(self):
+    def getValidConnections(self):
         ''' Finds every place where a word could start (called attachments) given a board '''
         # i dont really understand this rn but it definitely seems useful TODO
         board = self.board

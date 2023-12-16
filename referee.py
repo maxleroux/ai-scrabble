@@ -13,7 +13,7 @@ tripleLetter = [20, 24, 76, 80, 84, 88, 136, 140, 144, 148, 200, 204]
 letterPointDict = {'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 'F': 4, 'G': 2,
                   'H': 4, 'I': 1, 'J': 8, 'K': 5, 'L': 1, 'M': 3, 'N': 1,
                   'O': 1, 'P': 3, 'Q': 10, 'R': 1, 'S': 1, 'T': 1, 'U': 1,
-                  'V': 4, 'W': 4, 'X': 8, 'Y': 4, 'Z': 10}
+                  'V': 4, 'W': 4, 'X': 8, 'Y': 4, 'Z': 10, ' ': 0}
 
 class referee:
     def __init__(self, playerScore = 0, opponentScore = 0):
@@ -36,21 +36,19 @@ class referee:
                 tripleWordSpace += 1
             if spot in doubleLetter:
                 if spot in letterCombo.keys():
-                    wordScore += 2 * letterPointDict[letterCombo[spot]]
+                    wordScore += 2 * letterPointDict[letterCombo[spot].upper()]
                 else:
-                    wordScore += 2 * letterPointDict[board[spot]]
+                    wordScore += 2 * letterPointDict[board[spot].upper()]
             elif spot in tripleLetter:
                 if spot in letterCombo.keys():
-                    wordScore += 3 * letterPointDict[letterCombo[spot]]
+                    wordScore += 3 * letterPointDict[letterCombo[spot].upper()]
                 else:
-                    wordScore += 3 * letterPointDict[board[spot]]
+                    wordScore += 3 * letterPointDict[board[spot].upper()]
             else:
                 if spot in letterCombo.keys():
-                    print(letterCombo[spot])
-                    print(letterPointDict[letterCombo[spot].upper()])
                     wordScore += letterPointDict[letterCombo[spot].upper()]
                 else:
-                    wordScore += letterPointDict[board[spot]]
+                    wordScore += letterPointDict[board[spot].upper()]
         
         
 
